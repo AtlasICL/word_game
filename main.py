@@ -94,7 +94,7 @@ label.pack(pady=20, padx=10)
 entry_box = ctk.CTkEntry(master=frame, placeholder_text="")
 entry_box.pack(pady=8, padx=10)
 
-def check_guess_attempt():
+def check_guess_attempt(argu='in'):
     if lev.distance(entry_box.get(), cW.word) <= int(drop.get()):
         print("CORRECT")
         cW.update()
@@ -114,13 +114,13 @@ button.pack(pady=8, padx=10)
 feedback_label = ctk.CTkLabel(master=frame, height=20, width=100, textvariable=true_false_lbl)
 feedback_label.pack(pady=8, padx=10)
 
-LDTitle = ctk.CTkLabel(master=frame, height=20, text="Mistakes allowed:")
+LDTitle = ctk.CTkLabel(master=frame, height=20, text="Deviation allowed:")
 LDTitle.pack(pady=8, padx=10)
 
 drop = ctk.CTkOptionMenu(master=frame, values=["0", "1", "2"], fg_color="gray", button_color="gray") 
 drop.pack()
 
-#root.bind('<Return>', check_guess_attempt)
+root.bind('<Return>', button._command)
 
 def main():
     root.mainloop()
