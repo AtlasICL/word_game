@@ -84,7 +84,6 @@ lbl = ctk.StringVar(master=root, value=hW.word)
 true_false_lbl = ctk.StringVar(master=root, value=tflbl.val)
 
 
-
 frame = ctk.CTkFrame(master=root)
 frame.pack(pady=20, padx=60, fill="both", expand=True)
 
@@ -106,10 +105,20 @@ def check_guess_attempt(argu='in'):
         print("FALSE")
         true_false_lbl.set("FALSE")
 
+def skip_word():
+    print("SKIPPING WORD")
+    cW.update()
+    hW.update()
+    lbl.set(str(hW.word))
+    true_false_lbl.set("SKIPPED")
+    entry_box.delete(0, len(entry_box.get()))
 
 
-button = ctk.CTkButton(master=frame, text="Guess", command=check_guess_attempt)
-button.pack(pady=8, padx=10)
+submitGuessButton = ctk.CTkButton(master=frame, text="Guess", command=check_guess_attempt, fg_color="green")
+submitGuessButton.pack(pady=8, padx=10)
+
+skipWordButton = ctk.CTkButton(master=frame, text="Skip", command=skip_word)
+skipWordButton.pack(pady=8, padx=10)
 
 feedback_label = ctk.CTkLabel(master=frame, height=20, width=100, textvariable=true_false_lbl)
 feedback_label.pack(pady=8, padx=10)
@@ -120,7 +129,7 @@ LDTitle.pack(pady=8, padx=10)
 drop = ctk.CTkOptionMenu(master=frame, values=["0", "1", "2"], fg_color="gray", button_color="gray") 
 drop.pack()
 
-root.bind('<Return>', button._command)
+root.bind('<Return>', submitGuessButton._command)
 
 def main():
     root.mainloop()
