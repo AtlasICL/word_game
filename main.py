@@ -75,14 +75,33 @@ class true_false_label:
     def update_false(self):
         self.val = "FALSE"
 
-cW = cWord()
-hW = hWord()
+class score:
+    correctlyGuessedWords = 0
+    totalGuessedWords = 0
+    def __init__(self):
+        self.correctlyGuessedWords = 0
+        self.totalGuessedWords = 0
+    def addCorrectGuess(self):
+        self.correctlyGuessedWords += 1
+        self.totalGuessedWords += 1
+    def addIncorrectGuess(self):
+        self.totalGuessedWords += 1
+    def getCorrectGuesses(self) -> int:
+        return self.correctlyGuessedWords
+    def getTotalGuesses(self) -> int:
+        return self.totalGuessedWords
+
+
+correctWord = cWord()
+hiddenWord = hWord()
+scoreCounter = score()
 
 tflbl = true_false_label()
 
-lbl = ctk.StringVar(master=root, value=hW.word)
+lbl = ctk.StringVar(master=root, value=hiddenWord.word)
 true_false_lbl = ctk.StringVar(master=root, value=tflbl.val)
-
+scoreLabelText = ctk.StringVar(master=root,
+                               value=str(scoreCounter.getCorrectGuesses())+'/'+str(scoreCounter.getTotalGuesses()))
 
 frame = ctk.CTkFrame(master=root)
 frame.pack(pady=20, padx=60, fill="both", expand=True)
@@ -94,23 +113,29 @@ entry_box = ctk.CTkEntry(master=frame, placeholder_text="")
 entry_box.pack(pady=8, padx=10)
 
 def check_guess_attempt(argu='in'):
-    if lev.distance(entry_box.get(), cW.word) <= int(drop.get()):
+    if lev.distance(entry_box.get(), correctWord.word) <= int(drop.get()):
         print("CORRECT")
-        cW.update()
-        hW.update()
-        lbl.set(str(hW.word))
+        correctWord.update()
+        hiddenWord.update()
+        lbl.set(str(hiddenWord.word))
         true_false_lbl.set("CORRECT")
         entry_box.delete(0, len(entry_box.get()))
+        scoreCounter.addCorrectGuess()
+        scoreLabelText.set(str(scoreCounter.getCorrectGuesses())+'/'+str(scoreCounter.getTotalGuesses()))
     else:
         print("FALSE")
         true_false_lbl.set("FALSE")
+        # scoreCounter.addIncorrectGuess()
+        # scoreLabelText.set(str(scoreCounter.getCorrectGuesses())+'/'+str(scoreCounter.getTotalGuesses()))
 
 def skip_word():
     print("SKIPPING WORD")
-    cW.update()
-    hW.update()
-    lbl.set(str(hW.word))
+    correctWord.update()
+    hiddenWord.update()
+    lbl.set(str(hiddenWord.word))
     true_false_lbl.set("SKIPPED")
+    scoreCounter.addIncorrectGuess()
+    scoreLabelText.set(str(scoreCounter.getCorrectGuesses())+'/'+str(scoreCounter.getTotalGuesses()))
     entry_box.delete(0, len(entry_box.get()))
 
 
@@ -123,13 +148,16 @@ skipWordButton.pack(pady=8, padx=10)
 feedback_label = ctk.CTkLabel(master=frame, height=20, width=100, textvariable=true_false_lbl)
 feedback_label.pack(pady=8, padx=10)
 
-LDTitle = ctk.CTkLabel(master=frame, height=20, text="Deviation allowed:")
-LDTitle.pack(pady=8, padx=10)
+DeviationAllowedMenuTitle = ctk.CTkLabel(master=frame, height=20, text="Deviation allowed:")
+DeviationAllowedMenuTitle.pack(pady=8, padx=10)
 
 drop = ctk.CTkOptionMenu(master=frame, values=["0", "1", "2"], fg_color="gray", button_color="gray") 
 drop.pack()
 
 root.bind('<Return>', submitGuessButton._command)
+
+scoreLabel = ctk.CTkLabel(master=frame, height=14, textvariable=scoreLabelText, font=ctk.CTkFont(size=14, weight="bold"))
+scoreLabel.pack(pady=20, padx=10)
 
 def main():
     root.mainloop()
