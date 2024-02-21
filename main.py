@@ -36,7 +36,6 @@ root = ctk.CTk()
 root.geometry("500x400")
 
 
-
 class cWord:
     word = ""
     round_no = -1
@@ -57,14 +56,6 @@ class hWord:
         self.round_no += 1
         self.word = hiddenWordList[self.round_no]
 
-class bg_color_var:
-    color = ""
-    def __init__(self):
-        self.color = "white"
-    def update_correct(self):
-        self.color = "green"
-    def update_false(self):
-        self.color = "red"
 
 class true_false_label:
     val = ""
