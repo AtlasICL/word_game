@@ -10,20 +10,21 @@ def vowel_stripper(word: str, vowel_list: list[str]):
             out = out + letter
     return out
 
-def blank_vowels(word: str, vowel_list: list[str]):
-    out = ""
-    for letter in word:
-        if letter in VOWELS:
-            out += '_'
-        else:
-            out += letter
-    return out
+# Unused function, can be used to place an _ in the place of any
+# removed vowels instead of simply removing them
+# def blank_vowels(word: str, vowel_list: list[str]):
+#     out = ""
+#     for letter in word:
+#         if letter in VOWELS:
+#             out += '_'
+#         else:
+#             out += letter
+#     return out
 
 def open_and_read_file(filename: str) -> list[str]:
     List = open(filename).readlines()
     outlist = [word[:-1] for word in List]
     return outlist
-
 
 folder_path = ctk.filedialog.askopenfilename()
 
@@ -55,7 +56,6 @@ class hWord:
     def update(self):
         self.round_no += 1
         self.word = hiddenWordList[self.round_no]
-
 
 class true_false_label:
     val = ""
@@ -104,7 +104,7 @@ entry_box = ctk.CTkEntry(master=frame, placeholder_text="")
 entry_box.pack(pady=8, padx=10)
 
 def check_guess_attempt(argu='in'):
-    if lev.distance(entry_box.get(), correctWord.word) <= int(drop.get()):
+    if lev.distance(entry_box.get().lower(), correctWord.word.lower()) <= int(drop.get()):
         print("CORRECT")
         correctWord.update()
         hiddenWord.update()
@@ -116,8 +116,6 @@ def check_guess_attempt(argu='in'):
     else:
         print("FALSE")
         true_false_lbl.set("FALSE")
-        # scoreCounter.addIncorrectGuess()
-        # scoreLabelText.set(str(scoreCounter.getCorrectGuesses())+'/'+str(scoreCounter.getTotalGuesses()))
 
 def skip_word():
     print("SKIPPING WORD")
